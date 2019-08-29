@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.OutOfBounds.Pathfinder.model.ApplicationUser;
 import com.OutOfBounds.Pathfinder.repository.UserRepostirory;
 
-
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
@@ -23,11 +22,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		ApplicationUser user = userRepo.findByUsername(username);
-
-		if (user == null) {
-			throw new UsernameNotFoundException(username);
-		}
+		ApplicationUser user = userRepo.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException(username));
 		return new User(user.getUsername(), user.getPassword(), emptyList());
 	}
 }
